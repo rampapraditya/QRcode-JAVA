@@ -6,7 +6,7 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="true"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -35,8 +35,8 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="btnSubmit" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="236" max="32767" attributes="0"/>
+                              <Component id="btnGenerate" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="178" max="32767" attributes="0"/>
                           </Group>
                           <Component id="txtLink" max="32767" attributes="0"/>
                       </Group>
@@ -57,7 +57,7 @@
                   <Component id="txtLink" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="btnSubmit" min="-2" max="-2" attributes="0"/>
+              <Component id="btnGenerate" min="-2" max="-2" attributes="0"/>
               <EmptySpace pref="35" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -79,12 +79,12 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtLink">
     </Component>
-    <Component class="javax.swing.JButton" name="btnSubmit">
+    <Component class="javax.swing.JButton" name="btnGenerate">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Submit"/>
+        <Property name="text" type="java.lang.String" value="Generate QR Code"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSubmitActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenerateActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

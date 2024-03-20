@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package pramedia.qrcode;
 
 import com.google.zxing.BarcodeFormat;
@@ -13,9 +9,14 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -42,7 +43,7 @@ public class Main extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         txtLink = new javax.swing.JTextField();
-        btnSubmit = new javax.swing.JButton();
+        btnGenerate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,10 +52,10 @@ public class Main extends javax.swing.JFrame {
 
         jLabel2.setText("ENTER LINK");
 
-        btnSubmit.setText("Submit");
-        btnSubmit.addActionListener(new java.awt.event.ActionListener() {
+        btnGenerate.setText("Generate QR Code");
+        btnGenerate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSubmitActionPerformed(evt);
+                btnGenerateActionPerformed(evt);
             }
         });
 
@@ -73,8 +74,8 @@ public class Main extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnSubmit)
-                                .addGap(0, 236, Short.MAX_VALUE))
+                                .addComponent(btnGenerate)
+                                .addGap(0, 178, Short.MAX_VALUE))
                             .addComponent(txtLink))))
                 .addContainerGap())
         );
@@ -88,41 +89,53 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(txtLink, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnSubmit)
+                .addComponent(btnGenerate)
                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
-        try {
-            String qrdata = txtLink.getText();
+    private void btnGenerateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerateActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Image file", "png");
+        fileChooser.addChoosableFileFilter(filter);
+        fileChooser.setFileFilter(filter);
 
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Choose a File to upload"); // pass reference of your JFrame here 
-            int response = fileChooser.showSaveDialog(this);
-            if (response == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
-                String filePath = selectedFile.getAbsolutePath();
+        int option = fileChooser.showSaveDialog(Main.this);
+        if (option == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
 
+            // proses simpan
+            try {
+                String qrdata = txtLink.getText();
+                
+                String absolutePath = file.getAbsolutePath();
+                if (!absolutePath.substring(absolutePath.lastIndexOf(".") + 1).equals("png")) {
+                    absolutePath += ".png";
+                }
+                
                 String charset = "UTF-8";
                 Map<EncodeHintType, ErrorCorrectionLevel> hintMap = new HashMap<EncodeHintType, ErrorCorrectionLevel>();
                 hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
                 BitMatrix matrix = new MultiFormatWriter().encode(new String(qrdata.getBytes(charset), charset), BarcodeFormat.QR_CODE, 200, 200, hintMap);
-
-                MatrixToImageWriter.writeToFile(matrix, filePath.substring(filePath.lastIndexOf('.') + 1), new File(filePath));
-                System.out.println("Qr code has been generated at the location " + filePath);
+                
+                File newFile = new File(absolutePath);
+                String newFilePath = newFile.getAbsolutePath();
+                
+                MatrixToImageWriter.writeToFile(matrix, newFilePath.substring(newFilePath.lastIndexOf('.') + 1), newFile);
+                JOptionPane.showMessageDialog(rootPane, "QRcode generated", "Info", JOptionPane.INFORMATION_MESSAGE);
+            } catch (WriterException | IOException e) {
+                JOptionPane.showMessageDialog(rootPane, e, "Error", JOptionPane.ERROR_MESSAGE);
             }
-
-        } catch (WriterException | IOException e) {
-            System.out.println(e.getMessage());
         }
-    }//GEN-LAST:event_btnSubmitActionPerformed
+            
+    }//GEN-LAST:event_btnGenerateActionPerformed
 
     /**
-     * @param args the command line arguments
-     */
+         * @param args the command line arguments
+         */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -156,7 +169,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnSubmit;
+    private javax.swing.JButton btnGenerate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField txtLink;
